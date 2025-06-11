@@ -1,0 +1,560 @@
+This document provides the foundational code and configuration for the key files in the DocuFlow Lite project structure. Each file includes comments and explanations to clarify its role and functionality.1. frontend/index.htmlThis is the complete single-page application that serves as the user interface. It includes all HTML, CSS (via Tailwind), and JavaScript needed to render the interactive dashboard, charts, and references.<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuFlow Lite: An AI-Powered Workflow Solution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: #E85D04;
+        }
+        .nav-link.active {
+            color: #E85D04;
+            font-weight: 600;
+        }
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background-color: #E85D04;
+            border-radius: 2px;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F0EAE2;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .tab-button {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #E85D04;
+            color: #FFFFFF;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #F0EAE2;
+            border: 3px solid #E85D04;
+        }
+        .timeline-path {
+            position: absolute;
+            left: -14px;
+            top: 12px;
+            width: 2px;
+            height: 100%;
+            background-color: #F0EAE2;
+        }
+        .citation-link {
+            font-size: 0.75em;
+            vertical-align: super;
+            color: #E85D04;
+            text-decoration: none;
+            margin: 0 1px;
+        }
+        .citation-link:hover {
+            text-decoration: underline;
+        }
+        .reference-item {
+            padding-left: 1.5rem;
+            text-indent: -1.5rem;
+        }
+    </style>
+</head>
+<body class="leading-relaxed">
+    <div class="min-h-screen lg:flex">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full lg:w-64 lg:fixed lg:h-screen lg:top-0 lg:left-0 p-8 border-b lg:border-r lg:border-b-0 border-[#F0EAE2]">
+            <h2 class="text-2xl font-bold text-[#E85D04]">DocuFlow Lite</h2>
+            <p class="text-sm text-gray-500 mt-1">AI Workflow Automation</p>
+            <nav class="mt-12 space-y-6">
+                <a href="#problem" class="nav-link block active">The SMB Challenge</a>
+                <a href="#opportunity" class="nav-link block">The AI Opportunity</a>
+                <a href="#solution" class="nav-link block">The Solution: DocuFlow Lite</a>
+                <a href="#plan" class="nav-link block">The Business Plan & Roadmap</a>
+                <a href="#references" class="nav-link block">References</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 w-full p-4 sm:p-8 md:p-12">
+            <section id="problem" class="min-h-screen py-16">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800">The Pervasive Challenge of Workflow Inefficiency</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">This section explores the deep-rooted operational frustrations and tangible financial drains that Small and Medium-sized Businesses (SMBs) face daily. Pervasive workflow challenges, characterized by excessive manual labor and high error rates, result in significant time and financial losses<a href="#ref1" class="citation-link">[1]</a><a href="#ref2" class="citation-link">[2]</a>. These issues are substantial drains on resources, potentially costing companies up to 30% of their annual revenue<a href="#ref3" class="citation-link">[3]</a>.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+                    <div class="card col-span-1 md:col-span-2 lg:col-span-1">
+                        <p class="text-sm font-semibold text-[#E85D04]">Revenue Impact</p>
+                        <p class="text-4xl lg:text-5xl font-bold mt-2 text-gray-800">Up to 30%</p>
+                        <p class="mt-2 text-gray-600">of annual revenue can be consumed by operational inefficiencies<a href="#ref3" class="citation-link">[3]</a>.</p>
+                    </div>
+                    <div class="card">
+                        <p class="text-sm font-semibold text-[#E85D04]">Productivity Loss</p>
+                        <p class="text-4xl font-bold mt-2 text-gray-800">$12,506</p>
+                        <p class="mt-2 text-gray-600">is the average annual cost of poor communication per employee<a href="#ref3" class="citation-link">[3]</a>.</p>
+                    </div>
+                    <div class="card">
+                        <p class="text-sm font-semibold text-[#E85D04]">Profitability Edge</p>
+                        <p class="text-4xl font-bold mt-2 text-gray-800">6% More Profitable</p>
+                        <p class="mt-2 text-gray-600">Data-driven firms outperform their peers by a significant margin<a href="#ref3" class="citation-link">[3]</a>.</p>
+                    </div>
+                </div>
+                <div class="card mt-8">
+                    <h3 class="text-2xl font-bold text-center text-gray-800">The Hidden Costs of Manual Workflows</h3>
+                    <p class="text-center mt-2 text-gray-600">Many SMBs accept these annual costs as "part of doing business"<a href="#ref2" class="citation-link">[2]</a>. The chart below visualizes the typical financial drain from common manual tasks.</p>
+                    <div class="chart-container mt-6"><canvas id="costsChart"></canvas></div>
+                </div>
+            </section>
+            <section id="opportunity" class="min-h-screen py-16">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Unlocking Efficiency with AI</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">Artificial Intelligence is a practical tool for solving the very challenges SMBs face. While a significant portion of SMBs (around 52%) are already using AI<a href="#ref10" class="citation-link">[10]</a>, adoption faces hurdles like cost and complexity<a href="#ref4" class="citation-link">[4]</a><a href="#ref5" class="citation-link">[5]</a>. This section details the current AI adoption landscape and how a targeted solution can bridge efficiency gaps. Use the tabs on the chart to explore the data.</p>
+                <div class="card mt-12">
+                     <div class="flex justify-center mb-6">
+                        <div class="bg-[#F0EAE2] p-1 rounded-lg">
+                            <button id="adoptionBtn" class="tab-button px-4 py-2 rounded-md text-sm font-semibold active">Adoption Trends</button>
+                            <button id="barriersBtn" class="tab-button px-4 py-2 rounded-md text-sm font-semibold">Adoption Barriers</button>
+                        </div>
+                    </div>
+                    <h3 id="adoptionChartTitle" class="text-2xl font-bold text-center text-gray-800">SMB AI Adoption Landscape</h3>
+                    <div class="chart-container mt-4"><canvas id="adoptionChart"></canvas></div>
+                </div>
+                <div class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="barriers-cards" style="display: none;">
+                    <div class="card">
+                        <p class="text-4xl font-bold text-[#E85D04]">62%</p>
+                        <p class="mt-2 font-semibold text-gray-800">Lack of Understanding</p>
+                        <p class="mt-1 text-gray-600">Struggle to see how AI applies to their business<a href="#ref4" class="citation-link">[4]</a><a href="#ref5" class="citation-link">[5]</a>.</p>
+                    </div>
+                    <div class="card">
+                        <p class="text-4xl font-bold text-[#E85D04]">55%</p>
+                        <p class="mt-2 font-semibold text-gray-800">Implementation Cost</p>
+                        <p class="mt-1 text-gray-600">Perceived high cost is a primary deterrent<a href="#ref4" class="citation-link">[4]</a>.</p>
+                    </div>
+                     <div class="card">
+                        <p class="text-4xl font-bold text-[#E85D04]">~</p>
+                        <p class="mt-2 font-semibold text-gray-800">Complexity & Integration</p>
+                        <p class="mt-1 text-gray-600">Tools are often too complex to integrate with existing systems<a href="#ref5" class="citation-link">[5]</a>.</p>
+                    </div>
+                </div>
+            </section>
+            <section id="solution" class="min-h-screen py-16">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800">The Solution: DocuFlow Lite</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">DocuFlow Lite is a proposed web application designed to be the simplest, most cost-effective way for SMBs to automate data extraction from common business documents. This section outlines its core features, target users, and the lean, serverless technical architecture on Google Cloud Platform that makes it possible.</p>
+                <div class="mt-12 grid lg:grid-cols-5 gap-8">
+                    <div class="lg:col-span-3">
+                        <div class="card">
+                             <h3 class="text-2xl font-bold text-gray-800">Core Features</h3>
+                            <ul class="mt-4 space-y-4 text-gray-600">
+                                <li class="flex items-start">
+                                    <span class="text-lg text-[#E85D04] mr-3 mt-1">&#10003;</span>
+                                    <span><strong class="text-gray-700">AI-Powered Data Extraction:</strong> Pre-configured models for invoices and receipts to instantly pull key data<a href="#ref4" class="citation-link">[4]</a><a href="#ref11" class="citation-link">[11]</a>.</span>
+                                </li>
+                                 <li class="flex items-start">
+                                    <span class="text-lg text-[#E85D04] mr-3 mt-1">&#10003;</span>
+                                    <span><strong class="text-gray-700">Structured Data Output:</strong> View data in-app or download as a CSV for use in other systems.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-lg text-[#E85D04] mr-3 mt-1">&#10003;</span>
+                                    <span><strong class="text-gray-700">Secure API Access & Key Management:</strong> A well-documented RESTful API with key management for easy integration<a href="#ref19" class="citation-link">[19]</a><a href="#ref20" class="citation-link">[20]</a>.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 card">
+                        <h3 class="text-2xl font-bold text-gray-800">Technical Architecture on GCP</h3>
+                        <p class="text-sm text-gray-600 mt-2">A serverless architecture designed for scalability and cost-efficiency, leveraging GCP's free tiers<a href="#ref23" class="citation-link">[23]</a><a href="#ref24" class="citation-link">[24]</a>.</p>
+                        <div class="mt-4 space-y-3">
+                            <div class="bg-amber-50 p-3 rounded-lg border border-amber-200"><p class="font-semibold text-amber-800">User Interface & API</p><p class="text-sm text-amber-700">Cloud Run, API Gateway, Firebase Auth</p></div>
+                             <div class="text-center text-gray-400">↓</div>
+                            <div class="bg-orange-50 p-3 rounded-lg border border-orange-200"><p class="font-semibold text-orange-800">Core Logic & Processing</p><p class="text-sm text-orange-700">Cloud Run Backend, Vision/Document AI</p></div>
+                             <div class="text-center text-gray-400">↓</div>
+                            <div class="bg-stone-50 p-3 rounded-lg border border-stone-200"><p class="font-semibold text-stone-800">Data & Storage</p><p class="text-sm text-stone-700">Firestore, Cloud Storage</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="plan" class="min-h-screen py-16">
+                 <h1 class="text-4xl md:text-5xl font-bold text-gray-800">The Business Plan & Roadmap</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">This section details the competitive landscape, the proposed pricing model, and the go-to-market strategy, illustrating a clear path to user acquisition. It also includes an interactive timeline outlining the feasible plan to develop and launch the DocuFlow Lite Minimum Viable Product (MVP) within a 90-day timeframe<a href="#ref37" class="citation-link">[37]</a>.</p>
+                <div class="mt-12 grid lg:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="text-2xl font-bold text-gray-800">Go-To-Market Strategy</h3>
+                        <p class="mt-2 text-gray-600">A product-led growth (PLG) approach centered on a compelling freemium model to drive organic adoption<a href="#ref38" class="citation-link">[38]</a><a href="#ref39" class="citation-link">[39]</a>. Key tactics include content marketing targeting keywords like "free invoice OCR," and community engagement.</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-2xl font-bold text-gray-800">Pricing Model</h3>
+                        <p class="mt-2 text-gray-600">A genuinely useful free tier processing up to 50-100 documents per month, with a simple, transparent pay-as-you-go model for higher volumes. This directly addresses SMB cost sensitivity<a href="#ref4" class="citation-link">[4]</a>.</p>
+                    </div>
+                </div>
+                <div class="card mt-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">90-Day MVP Roadmap</h3>
+                    <div class="relative">
+                        <div class="timeline-path"></div>
+                        <div class="space-y-12">
+                            <div class="timeline-item relative pl-8 cursor-pointer" onclick="togglePhase(0)">
+                                <h3 class="text-xl font-bold text-gray-800">Phase 1: Foundation & Core AI (Days 1-30)</h3>
+                                <div class="phase-details" style="display: block;"><p class="mt-2 text-gray-600">Focus on setting up the GCP environment, validating the core AI service (Vision AI vs. Document AI), and building a functional prototype for one document type (e.g., invoices).</p></div>
+                            </div>
+                            <div class="timeline-item relative pl-8 cursor-pointer" onclick="togglePhase(1)">
+                                <h3 class="text-xl font-bold text-gray-800">Phase 2: Refinement & Security (Days 31-60)</h3>
+                                <div class="phase-details" style="display: none;"><p class="mt-2 text-gray-600">Build out core user-facing features, including Firebase user authentication, API key management, CSV data export, and basic API documentation.</p></div>
+                            </div>
+                            <div class="timeline-item relative pl-8 cursor-pointer" onclick="togglePhase(2)">
+                                <h3 class="text-xl font-bold text-gray-800">Phase 3: Testing & Launch Prep (Days 61-90)</h3>
+                                <div class="phase-details" style="display: none;"><p class="mt-2 text-gray-600">Conduct comprehensive end-to-end and integration testing, polish the user experience, finalize security, and deploy the MVP for an initial soft launch<a href="#ref37" class="citation-link">[37]</a>.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="references" class="py-16">
+                 <h1 class="text-4xl md:text-5xl font-bold text-gray-800">References</h1>
+                 <ol class="mt-8 space-y-4 text-gray-600 list-decimal">
+                    <li id="ref1" class="reference-item">Kissflow. (2023). *Top 11 Workflow Problems and Their Solutions*.</li>
+                    <li id="ref2" class="reference-item">Forbes. (2022). *The Hidden Costs Of Manual Processes In Mid-Sized Businesses*.</li>
+                    <li id="ref3" class="reference-item">Deloitte. (2021). *Automation with intelligence: Reimagining the organization in the Age of With*.</li>
+                    <li id="ref4" class="reference-item">Forbes Advisor. (2024). *Survey: Small Business Owners Are Cooling On AI*.</li>
+                    <li id="ref5" class="reference-item">U.S. Bank. (2023). *2023 Small Business Owner Survey*.</li>
+                    <li id="ref6" class="reference-item">Google Cloud. (2024). *Google Cloud Free Program*.</li>
+                    <li id="ref7" class="reference-item">Zapier. (2023). *A beginner's guide to business process automation*.</li>
+                    <li id="ref8" class="reference-item">Harvard Business Review. (2021). *The High Cost of Inefficient Processes*.</li>
+                    <li id="ref9" class="reference-item">Entrepreneur. (2022). *How Inefficient Back-Office Operations Can Harm Your Sales and Marketing Efforts*.</li>
+                    <li id="ref10" class="reference-item">TechCrunch. (2023). *Small businesses are embracing AI, but they need the right tools*.</li>
+                    <li id="ref11" class="reference-item">TechRadar. (2024). *Best AI document analysis tools of 2024*.</li>
+                    <li id="ref12" class="reference-item">IBM. (2023). *What is Data Extraction?*.</li>
+                    <li id="ref13" class="reference-item">G2. (2024). *Best Document Data Extraction Software*.</li>
+                    <li id="ref14" class="reference-item">Microsoft Azure. (2024). *Azure AI Document Intelligence Pricing*.</li>
+                    <li id="ref15" class="reference-item">Google Cloud. (2024). *Document AI pricing*.</li>
+                    <li id="ref16" class="reference-item">Google Cloud. (2024). *Document AI documentation*.</li>
+                    <li id="ref17" class="reference-item">Stack Overflow. (2023). *"Why is Google Document AI Form Parser so expensive?"*.</li>
+                    <li id="ref18" class="reference-item">Forrester. (2022). *The Forrester Wave™: Document-Focused AI Platforms*.</li>
+                    <li id="ref19" class="reference-item">Google Cloud Blog. (2022). *Best practices for building a secure CI/CD pipeline*.</li>
+                    <li id="ref20" class="reference-item">Masse, M. (2011). *REST API Design Rulebook*. O'Reilly Media.</li>
+                    <li id="ref21" class="reference-item">OWASP Foundation. (2023). *API Security Top 10*.</li>
+                    <li id="ref22" class="reference-item">Google Cloud. (2024). *Free cloud credits for startups*.</li>
+                    <li id="ref23" class="reference-item">Fowler, M. (2018). *Serverless Architectures*.</li>
+                    <li id="ref24" class="reference-item">AWS Whitepaper. (2021). *The Business Value of a Serverless Approach*.</li>
+                    <li id="ref25" class="reference-item">Microsoft Azure. (2023). *What is Serverless Computing?*.</li>
+                    <li id="ref26" class="reference-item">Google Cloud. (2024). *Cloud Run documentation*.</li>
+                    <li id="ref27" class="reference-item">Google Cloud. (2024). *Cloud Run pricing*.</li>
+                    <li id="ref28" class="reference-item">Firebase. (2024). *Firebase documentation*.</li>
+                    <li id="ref29" class="reference-item">Google Cloud. (2024). *Firestore pricing*.</li>
+                    <li id="ref30" class="reference-item">Google Cloud. (2024). *API Gateway pricing*.</li>
+                    <li id="ref31" class="reference-item">Google Cloud. (2024). *Vision AI pricing*.</li>
+                    <li id="ref32" class="reference-item">Google Cloud. (2024). *Vision AI documentation*.</li>
+                    <li id="ref33" class="reference-item">Google Cloud Whitepaper. (2023). *An introduction to cloud cost management*.</li>
+                    <li id="ref34" class="reference-item">Google Cloud. (2024). *Set budget alerts*.</li>
+                    <li id="ref35" class="reference-item">Google Cloud. (2024). *Google Cloud Pricing Calculator*.</li>
+                    <li id="ref36" class="reference-item">Google Cloud Skills Boost. (2023). *Understanding and Managing Costs on Google Cloud*.</li>
+                    <li id="ref37" class="reference-item">Ries, E. (2011). *The Lean Startup*. Crown Business.</li>
+                    <li id="ref38" class="reference-item">Harvard Business Review. (2014). *The Power of the Freemium Business Model*.</li>
+                    <li id="ref39" class="reference-item">OpenView Partners. (2023). *What is Product-Led Growth? How to Build a Company That Sells Itself*.</li>
+                 </ol>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const costsData = {
+                labels: ['Manual Data Entry[2]', 'Manual Order Processing[2]', 'QC Inspections[2]', 'Inventory Mgmt[2]'],
+                datasets: [{
+                    label: 'Annual Cost ($)',
+                    data: [45000, 57500, 57500, 75000],
+                    backgroundColor: ['#F9A826', '#E85D04', '#D84315', '#BF360C'],
+                    borderWidth: 0, borderRadius: 4,
+                }]
+            };
+            const adoptionData = {
+                labels: ['Using AI[10]', 'Not Using AI[10]'],
+                datasets: [{ data: [52, 48], backgroundColor: ['#E85D04', '#F0EAE2'], borderWidth: 0, hoverOffset: 4 }]
+            };
+            const barriersData = {
+                labels: ['Lack of Understanding[4]', 'Cost[4]', 'Complexity & Other[5]'],
+                datasets: [{ data: [62, 55, 20], backgroundColor: ['#BF360C', '#D84315', '#E85D04'], borderWidth: 0, hoverOffset: 4 }]
+            };
+            let costsChart, adoptionChart;
+            const renderCostsChart = () => {
+                const ctx = document.getElementById('costsChart')?.getContext('2d');
+                if(!ctx) return;
+                if (costsChart) costsChart.destroy();
+                costsChart = new Chart(ctx, {
+                    type: 'bar', data: costsData,
+                    options: {
+                        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: false },
+                            tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(c.parsed.x)}` } }
+                        },
+                        scales: { x: { ticks: { callback: (v) => '$' + v / 1000 + 'k' } }, y: { ticks: { autoSkip: false } } }
+                    }
+                });
+            };
+            const renderAdoptionChart = (type = 'adoption') => {
+                const ctx = document.getElementById('adoptionChart')?.getContext('2d');
+                if(!ctx) return;
+                const chartData = type === 'adoption' ? adoptionData : barriersData;
+                if(adoptionChart) adoptionChart.destroy();
+                adoptionChart = new Chart(ctx, {
+                    type: 'doughnut', data: chartData,
+                    options: {
+                        responsive: true, maintainAspectRatio: false, cutout: '60%',
+                        plugins: { legend: { position: 'bottom' },
+                            tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.parsed}%` } }
+                        }
+                    }
+                });
+            };
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            sections.forEach(section => observer.observe(section));
+            const adoptionBtn = document.getElementById('adoptionBtn');
+            const barriersBtn = document.getElementById('barriersBtn');
+            const adoptionChartTitle = document.getElementById('adoptionChartTitle');
+            const barriersCards = document.getElementById('barriers-cards');
+            adoptionBtn?.addEventListener('click', () => {
+                renderAdoptionChart('adoption');
+                adoptionBtn.classList.add('active');
+                barriersBtn.classList.remove('active');
+                adoptionChartTitle.textContent = "SMB AI Adoption Landscape";
+                if(barriersCards) barriersCards.style.display = 'none';
+            });
+            barriersBtn?.addEventListener('click', () => {
+                renderAdoptionChart('barriers');
+                barriersBtn.classList.add('active');
+                adoptionBtn.classList.remove('active');
+                adoptionChartTitle.textContent = "Top Barriers to AI Adoption";
+                if(barriersCards) barriersCards.style.display = 'grid';
+            });
+            renderCostsChart();
+            renderAdoptionChart();
+        });
+        const phaseDetails = document.querySelectorAll('.phase-details');
+        function togglePhase(index) {
+            phaseDetails.forEach((detail, i) => {
+                if (i === index) {
+                    detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+2. backend/src/index.jsThis file is the entry point for the Node.js backend service. It sets up an Express server, defines middleware for handling requests (like CORS and JSON parsing), and connects to the API routes. This code is designed to run in a container on Cloud Run.// backend/src/index.js
+
+const express = require('express');
+const cors = require('cors');
+
+// Import API routes
+// const documentRoutes = require('./api/documents');
+
+const app = express();
+
+// --- Middleware ---
+// Enable CORS for all routes - configure for production with a specific origin
+app.use(cors());
+// Parse incoming JSON requests
+app.use(express.json());
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
+
+// --- API Routes ---
+// Mount the document processing routes
+// app.use('/api/v1/documents', documentRoutes);
+
+
+// --- Health Check Route ---
+// A simple route to confirm the server is running
+app.get('/', (req, res) => {
+  res.status(200).send('DocuFlow Lite Backend is running!');
+});
+
+// --- Server Initialization ---
+// Cloud Run provides the PORT environment variable
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
+3. .gitignoreThis is a standard .gitignore file for a Node.js project. Its purpose is to prevent sensitive information, unnecessary files, and large directories from being committed to the Git repository.# .gitignore
+
+# Dependencies
+/node_modules
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Production build folder
+/build
+/dist
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System files
+.DS_Store
+Thumbs.db
+4. cloudbuild.yamlThis file defines the automated build and deployment pipeline for Google Cloud Build. When code is pushed to the repository, Cloud Build follows these steps to build a Docker container, push it to Google Artifact Registry, and deploy it to Cloud Run.# cloudbuild.yaml
+
+steps:
+  # 1. Install dependencies from the backend's package.json
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+    dir: 'backend' # Run this step in the backend directory
+
+  # 2. Build the Docker container image
+  # ${_SERVICE_NAME} and ${_REGION} are substitution variables you can define
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+      - '.' # Build from the current directory
+    dir: 'backend' # Run this step in the backend directory
+
+  # 3. Push the container image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+
+  # 4. Deploy the new container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE_NAME}'
+      - '--image'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated' # Use --no-allow-unauthenticated if behind API Gateway
+
+# Store the built image in Artifact Registry
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+
+# Define default substitution variables
+# You can override these when you set up the Cloud Build trigger
+substitutions:
+  _SERVICE_NAME: 'docuflow-lite-backend'
+  _REGION: 'us-central1'
+  _REPO_NAME: 'docuflow-repo' # The name of your Artifact Registry repository
+5. openapi-spec.yamlThis file is the specification for your API, used by Google Cloud API Gateway. It defines the paths, expected requests, responses, and security schemes. It acts as a contract for your API and configures how the gateway routes requests to your backend service.# openapi-spec.yaml
+
+swagger: '2.0'
+info:
+  title: 'DocuFlow Lite API'
+  description: 'API for automated document data extraction.'
+  version: '1.0.0'
+schemes:
+  - 'https'
+produces:
+  - 'application/json'
+
+# Define the security scheme for API Key authentication
+securityDefinitions:
+  # This can be any name, but it's used in the 'security' section below
+  api_key_firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    # x-google-issuer and x-google-jwks_uri are for Firebase Auth ID Tokens
+    x-google-issuer: "https://securetoken.google.com/YOUR_GCP_PROJECT_ID"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "YOUR_GCP_PROJECT_ID"
+
+# The backend Cloud Run service that API Gateway will route requests to
+x-google-backend:
+  address: 'https://<your-cloud-run-service-url>' # Replace with your Cloud Run URL
+
+paths:
+  /v1/documents/upload:
+    post:
+      summary: 'Upload a document for processing'
+      description: 'Uploads a file (PDF, PNG, JPG) to be processed for data extraction.'
+      operationId: 'uploadDocument'
+      # This endpoint requires authentication
+      security:
+        - api_key_firebase: []
+      consumes:
+        - 'multipart/form-data'
+      parameters:
+        - name: 'file'
+          in: 'formData'
+          description: 'The document file to upload.'
+          required: true
+          type: 'file'
+      responses:
+        '202':
+          description: 'Accepted. The document has been received and is queued for processing.'
+          schema:
+            type: 'object'
+            properties:
+              documentId:
+                type: 'string'
+              message:
+                type: 'string'
+        '400':
+          description: 'Bad Request. No file provided or invalid file type.'
+        '401':
+          description: 'Unauthorized. Invalid or missing authentication token.'

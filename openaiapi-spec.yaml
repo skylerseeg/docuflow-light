@@ -1,0 +1,59 @@
+# openapi-spec.yaml
+
+swagger: '2.0'
+info:
+  title: 'DocuFlow Lite API'
+  description: 'API for automated document data extraction.'
+  version: '1.0.0'
+schemes:
+  - 'https'
+produces:
+  - 'application/json'
+
+# Define the security scheme for API Key authentication
+securityDefinitions:
+  # This can be any name, but it's used in the 'security' section below
+  api_key_firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    # x-google-issuer and x-google-jwks_uri are for Firebase Auth ID Tokens
+    x-google-issuer: "https://securetoken.google.com/YOUR_GCP_PROJECT_ID"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "YOUR_GCP_PROJECT_ID"
+
+# The backend Cloud Run service that API Gateway will route requests to
+x-google-backend:
+  address: 'https://<your-cloud-run-service-url>' # Replace with your Cloud Run URL
+
+paths:
+  /v1/documents/upload:
+    post:
+      summary: 'Upload a document for processing'
+      description: 'Uploads a file (PDF, PNG, JPG) to be processed for data extraction.'
+      operationId: 'uploadDocument'
+      # This endpoint requires authentication
+      security:
+        - api_key_firebase: []
+      consumes:
+        - 'multipart/form-data'
+      parameters:
+        - name: 'file'
+          in: 'formData'
+          description: 'The document file to upload.'
+          required: true
+          type: 'file'
+      responses:
+        '202':
+          description: 'Accepted. The document has been received and is queued for processing.'
+          schema:
+            type: 'object'
+            properties:
+              documentId:
+                type: 'string'
+              message:
+                type: 'string'
+        '400':
+          description: 'Bad Request. No file provided or invalid file type.'
+        '401':
+          description: 'Unauthorized. Invalid or missing authentication token.'
