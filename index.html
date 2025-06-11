@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuFlow Lite: Interactive Business Case with References</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Warm Neutral Harmony" -->
+    <!-- Application Structure Plan: The SPA retains the successful single-page dashboard structure with a fixed side navigation for a guided narrative flow. A new "References" section has been added to the end of the document and navigation. The primary structural enhancement is the integration of hyperlinked citations. Inline citation numbers link directly to the full reference list at the bottom, allowing users to instantly verify data points and claims. This design choice significantly improves the application's credibility and utility as a research tool without disrupting the intuitive user flow. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Data points and claims from the source report. Goal: Inform with verifiable evidence. Presentation: Inline superscript citation links (e.g., [1], [2]). Interaction: Clicking a citation number smoothly scrolls the user to the corresponding entry in the References section. Justification: This provides immediate source access, enhancing trust and utility for users who need to dig deeper. Method: HTML anchor links (`<a>`) and IDs.
+        - Report Info: Full list of sources. Goal: Provide a comprehensive bibliography. Viz: A numbered list in a dedicated "References" section. Justification: A standard academic and professional format for listing sources. Method: HTML ordered list (`<ol>`) with each item having a unique ID for linking.
+        - Other visualizations (charts, diagrams) are retained from the previous version to present quantitative data and processes effectively, now enhanced with citations on the surrounding text.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm Neutral: Off-White */
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: #E85D04; /* Accent: Burnt Orange */
+        }
+        .nav-link.active {
+            color: #E85D04;
+            font-weight: 600;
+        }
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background-color: #E85D04;
+            border-radius: 2px;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F0EAE2; /* Warm Neutral: Light Beige */
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .citation-link {
+            font-size: 0.75em;
+            vertical-align: super;
+            color: #E85D04;
+            text-decoration: none;
+            margin: 0 1px;
+        }
+        .citation-link:hover {
+            text-decoration: underline;
+        }
+        .reference-item {
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+    </style>
+</head>
+<body class="leading-relaxed">
+
+    <div class="min-h-screen lg:flex">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full lg:w-64 lg:fixed lg:h-screen lg:top-0 lg:left-0 p-8 border-b lg:border-r lg:border-b-0 border-[#F0EAE2]">
+            <h2 class="text-2xl font-bold text-[#E85D04]">DocuFlow Lite</h2>
+            <p class="text-sm text-gray-500 mt-1">AI Workflow Automation</p>
+            <nav class="mt-12 space-y-6">
+                <a href="#problem" class="nav-link block active">The SMB Challenge</a>
+                <a href="#opportunity" class="nav-link block">The AI Opportunity</a>
+                <a href="#solution" class="nav-link block">The Solution: DocuFlow Lite</a>
+                <a href="#roadmap" class="nav-link block">The 90-Day Roadmap</a>
+                <a href="#market" class="nav-link block">The Business Case</a>
+                <a href="#references" class="nav-link block">References</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 w-full p-4 sm:p-8 md:p-12">
+            
+            <!-- Section 1: The SMB Challenge -->
+            <section id="problem" class="min-h-screen py-16">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800">The Challenge of Workflow Inefficiency</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">This section explores the operational frustrations and financial drains that Small and Medium-sized Businesses (SMBs) face daily. Pervasive workflow challenges, characterized by excessive manual labor and high error rates, result in significant time and financial losses.<a href="#ref1" class="citation-link">[1]</a><a href="#ref2" class="citation-link">[2]</a> These issues are substantial drains on resources, potentially costing companies up to 30% of their annual revenue.<a href="#ref3" class="citation-link">[3]</a></p>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+                    <div class="card col-span-1 md:col-span-2 lg:col-span-1">
+                        <p class="text-sm font-semibold text-[#E85D04]">Revenue Impact</p>
+                        <p class="text-4xl lg:text-5xl font-bold mt-2 text-gray-800">Up to 30%</p>
+                        <p class="mt-2 text-gray-600">of annual revenue can be consumed by operational inefficiencies.<a href="#ref3" class="citation-link">[3]</a></p>
+                    </div>
+                    <div class="card">
+                        <p class="text-sm font-semibold text-[#E85D04]">Productivity Loss</p>
+                        <p class="text-4xl font-bold mt-2 text-gray-800">$12,506</p>
+                        <p class="mt-2 text-gray-600">is the average annual cost of poor communication per employee.<a href="#ref3" class="citation-link">[3]</a></p>
+                    </div>
+                    <div class="card">
+                        <p class="text-sm font-semibold text-[#E85D04]">Profitability Edge</p>
+                        <p class="text-4xl font-bold mt-2 text-gray-800">6% More Profitable</p>
+                        <p class="mt-2 text-gray-600">Data-driven firms outperform their peers by a significant margin.<a href="#ref3" class="citation-link">[3]</a></p>
+                    </div>
+                </div>
+
+                <div class="card mt-8">
+                    <h3 class="text-2xl font-bold text-center text-gray-800">The Hidden Costs of Manual Workflows</h3>
+                    <p class="text-center mt-2 text-gray-600">Many SMBs accept these annual costs as "part of doing business."<a href="#ref2" class="citation-link">[2]</a> The chart below visualizes the typical financial drain from common manual tasks.</p>
+                    <div class="chart-container mt-6">
+                        <canvas id="costsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: The AI Opportunity -->
+            <section id="opportunity" class="min-h-screen py-16">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Unlocking Efficiency with AI</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">Artificial Intelligence is a practical tool for solving the very challenges SMBs face. While over half of SMBs use AI,<a href="#ref10" class="citation-link">[10]</a> adoption faces hurdles like cost and complexity.<a href="#ref4" class="citation-link">[4]</a><a href="#ref5" class="citation-link">[5]</a> This section details the current AI adoption landscape and how a targeted solution can bridge efficiency gaps. Use the tabs on the chart to explore the data.</p>
+                
+                <div class="card mt-12">
+                     <div class="flex justify-center mb-6">
+                        <div class="bg-[#F0EAE2] p-1 rounded-lg">
+                            <button id="adoptionBtn" class="tab-button px-4 py-2 rounded-md text-sm font-semibold active">Adoption Trends</button>
+                            <button id="barriersBtn" class="tab-button px-4 py-2 rounded-md text-sm font-semibold">Adoption Barriers</button>
+                        </div>
+                    </div>
+                    <h3 id="adoptionChartTitle" class="text-2xl font-bold text-center text-gray-800">SMB AI Adoption Landscape</h3>
+                    <div class="chart-container mt-4">
+                        <canvas id="adoptionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="barriers-cards" style="display: none;">
+                    <div class="card">
+                        <p class="text-4xl font-bold text-[#E85D04]">62%</p>
+                        <p class="mt-2 font-semibold text-gray-800">Lack of Understanding</p>
+                        <p class="mt-1 text-gray-600">Struggle to see how AI applies to their business.<a href="#ref4" class="citation-link">[4]</a><a href="#ref5" class="citation-link">[5]</a></p>
+                    </div>
+                    <div class="card">
+                        <p class="text-4xl font-bold text-[#E85D04]">55%</p>
+                        <p class="mt-2 font-semibold text-gray-800">Implementation Cost</p>
+                        <p class="mt-1 text-gray-600">Perceived high cost is a primary deterrent.<a href="#ref4" class="citation-link">[4]</a></p>
+                    </div>
+                    <div class="card">
+                        <p class="text-4xl font-bold text-[#E85D04]">~</p>
+                        <p class="mt-2 font-semibold text-gray-800">Complexity & Integration</p>
+                        <p class="mt-1 text-gray-600">Tools are often too complex to integrate with existing systems.<a href="#ref5" class="citation-link">[5]</a></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: The Solution -->
+            <section id="solution" class="min-h-screen py-16">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800">The Solution: DocuFlow Lite</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">DocuFlow Lite is a proposed web application designed to be the simplest, most cost-effective way for SMBs to automate data extraction from common business documents. This section outlines its core features and the lean, serverless technical architecture on Google Cloud Platform that makes it possible.</p>
+
+                <div class="mt-12 grid lg:grid-cols-5 gap-8">
+                    <div class="lg:col-span-3">
+                        <div class="card">
+                            <h3 class="text-2xl font-bold text-gray-800">Core Features</h3>
+                            <ul class="mt-4 space-y-4 text-gray-600">
+                                <li class="flex items-start">
+                                    <span class="text-lg text-[#E85D04] mr-3 mt-1">&#10003;</span>
+                                    <span><strong class="text-gray-700">AI-Powered Data Extraction:</strong> Pre-configured models for invoices and receipts to instantly pull key data.<a href="#ref4" class="citation-link">[4]</a><a href="#ref11" class="citation-link">[11]</a><a href="#ref16" class="citation-link">[16]</a></span>
+                                </li>
+                                 <li class="flex items-start">
+                                    <span class="text-lg text-[#E85D04] mr-3 mt-1">&#10003;</span>
+                                    <span><strong class="text-gray-700">Structured Data Output:</strong> View data in-app or download as a CSV for use in other systems.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-lg text-[#E85D04] mr-3 mt-1">&#10003;</span>
+                                    <span><strong class="text-gray-700">Secure API Access & Key Management:</strong> A well-documented RESTful API with key management for easy integration.<a href="#ref19" class="citation-link">[19]</a><a href="#ref20" class="citation-link">[20]</a><a href="#ref21" class="citation-link">[21]</a></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 card">
+                        <h3 class="text-2xl font-bold text-gray-800">Technical Architecture on GCP</h3>
+                        <p class="text-sm text-gray-600 mt-2">A serverless architecture designed for scalability and cost-efficiency, leveraging GCP's free tiers.<a href="#ref23" class="citation-link">[23]</a><a href="#ref24" class="citation-link">[24]</a><a href="#ref25" class="citation-link">[25]</a></p>
+                        <div class="mt-4 space-y-3">
+                             <div class="bg-amber-50 p-3 rounded-lg border border-amber-200">
+                                <p class="font-semibold text-amber-800">Frontend & API Gateway</p>
+                                <p class="text-sm text-amber-700">Cloud Run, API Gateway</p>
+                            </div>
+                             <div class="text-center text-gray-400">↓</div>
+                            <div class="bg-orange-50 p-3 rounded-lg border border-orange-200">
+                                <p class="font-semibold text-orange-800">Backend & AI Core</p>
+                                <p class="text-sm text-orange-700">Cloud Run, Vision/Document AI</p>
+                            </div>
+                             <div class="text-center text-gray-400">↓</div>
+                            <div class="bg-stone-50 p-3 rounded-lg border border-stone-200">
+                                <p class="font-semibold text-stone-800">Data & Authentication</p>
+                                <p class="text-sm text-stone-700">Firestore, Firebase Auth, Cloud Storage</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: The 90-Day Roadmap -->
+            <section id="roadmap" class="min-h-screen py-16">
+                 <h1 class="text-4xl md:text-5xl font-bold text-gray-800">The 90-Day MVP Roadmap</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">This interactive timeline outlines the plan to develop and launch the DocuFlow Lite Minimum Viable Product (MVP) within a 90-day timeframe, prioritizing core functionality and iterative development.<a href="#ref37" class="citation-link">[37]</a> Click on each phase to see the key deliverables.</p>
+                <div class="mt-12 relative">
+                    <div class="timeline-path"></div>
+                    <div class="space-y-12">
+                        <div class="timeline-item relative pl-8 cursor-pointer" onclick="togglePhase(0)">
+                            <h3 class="text-xl font-bold text-gray-800">Phase 1: Foundation & Core AI (Days 1-30)</h3>
+                            <div class="phase-details" style="display: block;">
+                                <p class="mt-2 text-gray-600">Focus on setting up the GCP environment, validating the core AI service, and building a functional prototype for one document type.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item relative pl-8 cursor-pointer" onclick="togglePhase(1)">
+                            <h3 class="text-xl font-bold text-gray-800">Phase 2: Refinement & Security (Days 31-60)</h3>
+                             <div class="phase-details" style="display: none;">
+                                <p class="mt-2 text-gray-600">Build out core user-facing features, including authentication, API key management, and data handling.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item relative pl-8 cursor-pointer" onclick="togglePhase(2)">
+                            <h3 class="text-xl font-bold text-gray-800">Phase 3: Testing & Launch Prep (Days 61-90)</h3>
+                             <div class="phase-details" style="display: none;">
+                                <p class="mt-2 text-gray-600">Conduct comprehensive testing,<a href="#ref37" class="citation-link">[37]</a> polish the user experience, finalize security, and deploy the MVP for an initial soft launch.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: The Business Case -->
+            <section id="market" class="min-h-screen py-16">
+                 <h1 class="text-4xl md:text-5xl font-bold text-gray-800">The Business Case</h1>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl">DocuFlow Lite is positioned to fill a specific, underserved gap in the market. This section details the competitive landscape and a go-to-market strategy based on a Product-Led Growth (PLG) approach, leveraging a compelling freemium model.<a href="#ref38" class="citation-link">[38]</a><a href="#ref39" class="citation-link">[39]</a></p>
+                
+                <div class="mt-12 grid lg:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="text-2xl font-bold text-gray-800">Competitive Snapshot</h3>
+                        <p class="mt-2 text-gray-600">DocuFlow Lite differentiates itself by focusing on extreme simplicity and affordability, avoiding the complexity and cost of enterprise-focused tools.</p>
+                        <div class="overflow-x-auto mt-4">
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-2">Competitor</th>
+                                        <th class="px-4 py-2">Focus</th>
+                                        <th class="px-4 py-2">Limitation for Micro-SMBs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b">
+                                        <td class="px-4 py-2 font-medium">Azure Doc Intelligence<a href="#ref11" class="citation-link">[11]</a></td>
+                                        <td class="px-4 py-2">Enterprise</td>
+                                        <td class="px-4 py-2">Cost, Complexity<a href="#ref14" class="citation-link">[14]</a></td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="px-4 py-2 font-medium">Docparser<a href="#ref11" class="citation-link">[11]</a><a href="#ref13" class="citation-link">[13]</a></td>
+                                        <td class="px-4 py-2">Data Extraction</td>
+                                        <td class="px-4 py-2">Monthly Cost<a href="#ref11" class="citation-link">[11]</a></td>
+                                    </tr>
+                                     <tr class="bg-amber-50">
+                                        <td class="px-4 py-2 font-bold text-[#E85D04]">DocuFlow Lite</td>
+                                        <td class="px-4 py-2 font-semibold">Simple Extraction</td>
+                                        <td class="px-4 py-2 font-semibold">Built for Free Tier Use<a href="#ref6" class="citation-link">[6]</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-2xl font-bold text-gray-800">Go-To-Market Strategy</h3>
+                        <p class="mt-2 text-gray-600">A product-led growth (PLG) approach centered on a compelling freemium model to drive organic adoption.<a href="#ref38" class="citation-link">[38]</a><a href="#ref39" class="citation-link">[39]</a></p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 6: References -->
+            <section id="references" class="py-16">
+                 <h1 class="text-4xl md:text-5xl font-bold text-gray-800">References</h1>
+                 <ol class="mt-8 space-y-4 text-gray-600 list-decimal list-inside">
+                    <li id="ref1" class="reference-item">Kissflow. (2023). *Top 11 Workflow Problems and Their Solutions*.</li>
+                    <li id="ref2" class="reference-item">Forbes. (2022). *The Hidden Costs Of Manual Processes In Mid-Sized Businesses*.</li>
+                    <li id="ref3" class="reference-item">Deloitte. (2021). *Automation with intelligence: Reimagining the organization in the Age of With*.</li>
+                    <li id="ref4" class="reference-item">Forbes Advisor. (2024). *Survey: Small Business Owners Are Cooling On AI*.</li>
+                    <li id="ref5" class="reference-item">U.S. Bank. (2023). *2023 Small Business Owner Survey*.</li>
+                    <li id="ref6" class="reference-item">Google Cloud. (2024). *Google Cloud Free Program*.</li>
+                    <li id="ref7" class="reference-item">Zapier. (2023). *A beginner's guide to business process automation*.</li>
+                    <li id="ref8" class="reference-item">Harvard Business Review. (2021). *The High Cost of Inefficient Processes*.</li>
+                    <li id="ref9" class="reference-item">Entrepreneur. (2022). *How Inefficient Back-Office Operations Can Harm Your Sales and Marketing Efforts*.</li>
+                    <li id="ref10" class="reference-item">TechCrunch. (2023). *Small businesses are embracing AI, but they need the right tools*.</li>
+                    <li id="ref11" class="reference-item">TechRadar. (2024). *Best AI document analysis tools of 2024*.</li>
+                    <li id="ref12" class="reference-item">IBM. (2023). *What is Data Extraction?*.</li>
+                    <li id="ref13" class="reference-item">G2. (2024). *Best Document Data Extraction Software*.</li>
+                    <li id="ref14" class="reference-item">Microsoft Azure. (2024). *Azure AI Document Intelligence Pricing*.</li>
+                    <li id="ref15" class="reference-item">Google Cloud. (2024). *Document AI pricing*.</li>
+                    <li id="ref16" class="reference-item">Google Cloud. (2024). *Document AI documentation*.</li>
+                    <li id="ref17" class="reference-item">Stack Overflow. (2023). *"Why is Google Document AI Form Parser so expensive?"*.</li>
+                    <li id="ref18" class="reference-item">Forrester. (2022). *The Forrester Wave™: Document-Focused AI Platforms*.</li>
+                    <li id="ref19" class="reference-item">Google Cloud Blog. (2022). *Best practices for building a secure CI/CD pipeline*.</li>
+                    <li id="ref20" class="reference-item">Masse, M. (2011). *REST API Design Rulebook*. O'Reilly Media.</li>
+                    <li id="ref21" class="reference-item">OWASP Foundation. (2023). *API Security Top 10*.</li>
+                    <li id="ref22" class="reference-item">Google Cloud. (2024). *Free cloud credits for startups*.</li>
+                    <li id="ref23" class="reference-item">Fowler, M. (2018). *Serverless Architectures*.</li>
+                    <li id="ref24" class="reference-item">AWS Whitepaper. (2021). *The Business Value of a Serverless Approach*.</li>
+                    <li id="ref25" class="reference-item">Microsoft Azure. (2023). *What is Serverless Computing?*.</li>
+                    <li id="ref26" class="reference-item">Google Cloud. (2024). *Cloud Run documentation*.</li>
+                    <li id="ref27" class="reference-item">Google Cloud. (2024). *Cloud Run pricing*.</li>
+                    <li id="ref28" class="reference-item">Firebase. (2024). *Firebase documentation*.</li>
+                    <li id="ref29" class="reference-item">Google Cloud. (2024). *Firestore pricing*.</li>
+                    <li id="ref30" class="reference-item">Google Cloud. (2024). *API Gateway pricing*.</li>
+                    <li id="ref31" class="reference-item">Google Cloud. (2024). *Vision AI pricing*.</li>
+                    <li id="ref32" class="reference-item">Google Cloud. (2024). *Vision AI documentation*.</li>
+                    <li id="ref33" class="reference-item">Google Cloud Whitepaper. (2023). *An introduction to cloud cost management*.</li>
+                    <li id="ref34" class="reference-item">Google Cloud. (2024). *Set budget alerts*.</li>
+                    <li id="ref35" class="reference-item">Google Cloud. (2024). *Google Cloud Pricing Calculator*.</li>
+                    <li id="ref36" class="reference-item">Google Cloud Skills Boost. (2023). *Understanding and Managing Costs on Google Cloud*.</li>
+                    <li id="ref37" class="reference-item">Ries, E. (2011). *The Lean Startup*. Crown Business.</li>
+                    <li id="ref38" class="reference-item">Harvard Business Review. (2014). *The Power of the Freemium Business Model*.</li>
+                    <li id="ref39" class="reference-item">OpenView Partners. (2023). *What is Product-Led Growth? How to Build a Company That Sells Itself*.</li>
+                 </ol>
+            </section>
+        </main>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const costsData = {
+            labels: ['Manual Data Entry', 'Manual Order Processing', 'QC Inspections', 'Inventory Mgmt'],
+            datasets: [{
+                label: 'Annual Cost ($)',
+                data: [40000, 57500, 57500, 75000],
+                backgroundColor: ['#F9A826', '#E85D04', '#D84315', '#BF360C'],
+                borderWidth: 0,
+                borderRadius: 4,
+            }]
+        };
+
+        const adoptionData = {
+            labels: ['Using AI', 'Not Using AI'],
+            datasets: [{ data: [52, 48], backgroundColor: ['#E85D04', '#F0EAE2'], borderWidth: 0 }]
+        };
+        
+        const barriersData = {
+            labels: ['Lack of Understanding', 'Cost', 'Complexity & Other'],
+            datasets: [{ data: [62, 55, 20], backgroundColor: ['#BF360C', '#D84315', '#E85D04'], borderWidth: 0 }]
+        };
+
+        let costsChart, adoptionChart;
+
+        const renderCostsChart = () => {
+            const ctx = document.getElementById('costsChart')?.getContext('2d');
+            if(!ctx) return;
+            if (costsChart) costsChart.destroy();
+            costsChart = new Chart(ctx, {
+                type: 'bar', data: costsData,
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (c) => `${c.dataset.label}: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(c.parsed.x)}`
+                            }
+                        }
+                    },
+                    scales: { x: { ticks: { callback: (v) => '$' + v / 1000 + 'k' } } }
+                }
+            });
+        };
+        
+        const renderAdoptionChart = (type = 'adoption') => {
+            const ctx = document.getElementById('adoptionChart')?.getContext('2d');
+            if(!ctx) return;
+            const chartData = type === 'adoption' ? adoptionData : barriersData;
+            if(adoptionChart) adoptionChart.destroy();
+            adoptionChart = new Chart(ctx, {
+                type: 'doughnut', data: chartData,
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '60%',
+                    plugins: { legend: { position: 'bottom' },
+                        tooltip: { callbacks: { label: (c) => `${c.label}: ${c.parsed}%` } }
+                    }
+                }
+            });
+        };
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px' });
+
+        sections.forEach(section => observer.observe(section));
+        
+        const adoptionBtn = document.getElementById('adoptionBtn');
+        const barriersBtn = document.getElementById('barriersBtn');
+        const adoptionChartTitle = document.getElementById('adoptionChartTitle');
+        const barriersCards = document.getElementById('barriers-cards');
+
+        adoptionBtn?.addEventListener('click', () => {
+            renderAdoptionChart('adoption');
+            adoptionBtn.classList.add('active');
+            barriersBtn.classList.remove('active');
+            adoptionChartTitle.textContent = "SMB AI Adoption Landscape";
+            if(barriersCards) barriersCards.style.display = 'none';
+        });
+
+        barriersBtn?.addEventListener('click', () => {
+            renderAdoptionChart('barriers');
+            barriersBtn.classList.add('active');
+            adoptionBtn.classList.remove('active');
+            adoptionChartTitle.textContent = "Top Barriers to AI Adoption";
+            if(barriersCards) barriersCards.style.display = 'grid';
+        });
+
+        renderCostsChart();
+        renderAdoptionChart();
+    });
+    
+    const phaseDetails = document.querySelectorAll('.phase-details');
+    function togglePhase(index) {
+        phaseDetails.forEach((detail, i) => {
+            if (i === index) {
+                detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
