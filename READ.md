@@ -1,210 +1,46 @@
-```markdown
-# DocuFlow Lite
-
-**DocuFlow Lite** is a lightweight, serverless web application that helps small-to-medium businesses (SMBs), freelancers, and startups automate data extraction from everyday documents—no more manual entry, no more errors. Built on Google Cloud’s free-tier-friendly services, it delivers AI-driven OCR and data workflows at minimal cost.
-
----
-
-## 🚀 Table of Contents
-
-1. [Key Features](#key-features)  
-2. [Technical Architecture & Tech Stack](#technical-architecture--tech-stack)  
-3. [Project Structure](#project-structure)  
-4. [Getting Started](#getting-started)  
-   - [Prerequisites](#prerequisites)  
-   - [Installation & Setup](#installation--setup)  
-5. [API Usage](#api-usage)  
-6. [License & Contributing](#license--contributing)
-
----
-
-## ✨ Key Features
-
-- **AI-Powered Extraction**  
-  Automatically pulls vendor, date, total, and other fields from invoices & receipts using Cloud Vision AI or Document AI.
-
-- **Simple Upload UI**  
-  Drag-and-drop or browse to upload PDFs, JPGs, or PNGs in a clean, single-page interface.
-
-- **Structured Output**  
-  View parsed data on-screen or download as CSV for seamless import into your ERP, accounting software, or database.
-
-- **Secure REST API**  
-  Integrate programmatically via a protected API gateway—perfect for custom workflows and third-party apps.
-
-- **API Key Management**  
-  Generate, view, and revoke API keys right from your user profile to control access.
-
----
-
-## 🏗️ Technical Architecture & Tech Stack
-
-DocuFlow Lite leverages a fully serverless, pay-as-you-go design on Google Cloud Platform (GCP), optimizing for free-tier usage while scaling automatically for demand.
-
-| Component               | Technology                                |
-|-------------------------|-------------------------------------------|
-| **Frontend**            | Single-page app: HTML5 · Tailwind CSS · Vanilla JS · Chart.js |
-| **Backend**             | Containerized service: Node.js or Python on Cloud Run |
-| **Authentication**      | Firebase Auth                             |
-| **Data Storage**        | Firestore (user profiles, metadata, results) |
-| **Document Storage**    | Cloud Storage (temporary uploads)         |
-| **OCR & Extraction**    | Cloud Vision API / Document AI            |
-| **API Layer**           | API Gateway + Cloud Run microservices     |
-| **CI/CD**               | Cloud Build (build, test, deploy)         |
-
-### Architecture Diagram
-
-```
-
-End User / Dev → Frontend (Cloud Run) → API Gateway → Backend (Cloud Run)
-↙            ↘
-Firebase Auth             Firestore
-↓
-Cloud Vision / Doc AI
-↓
-Cloud Storage
-
-```
-
----
-
-## 📂 Project Structure
-
-```
-
-docuflow-lite/
-├── backend/
-│   ├── src/
-│   │   ├── index.js           # Entry point
-│   │   ├── api/               # Route handlers
-│   │   └── services/          # GCP integration logic
-│   ├── Dockerfile             # Cloud Run container spec
-│   └── package.json
-│
-├── frontend/
-│   └── index.html             # Single-page UI
-│
-├── .gitignore
-├── cloudbuild.yaml            # CI/CD pipeline
-├── openapi-spec.yaml          # API Gateway definition
-└── README.md
-
-````
-
----
-
-## 🔧 Getting Started
-
-### Prerequisites
-
-- **Git**  
-- **Node.js & npm** (for backend, if using Node.js)  
-- **Docker** (for local container testing)  
-- **Google Cloud SDK** (`gcloud` CLI)  
-
-### Installation & Setup
-
-1. **Clone the repo**  
-   ```bash
-   git clone <your-repo-url>
-   cd docuflow-lite
-````
-
-2. **Create & configure your GCP project**
-
-   * In the [GCP Console](https://console.cloud.google.com/), create a new project.
-   * Enable: Cloud Run, Firestore, Cloud Vision API, Document AI, API Gateway, Cloud Build.
-   * Create a service account with `Cloud Run Admin`, `Firestore User`, and `Cloud Vision API User` roles.
-   * Download the JSON key file and note its path.
-
-3. **Backend Setup**
-
-   ```bash
-   cd backend
-   npm install
-   cp .env.example .env
-   # Edit .env with your GCP_PROJECT_ID and path to the service account key
-   npm run dev
-   ```
-
-4. **Frontend Setup**
-
-   * Open `frontend/index.html` in your browser for a static preview.
-   * To connect with your local backend, update the API endpoint URL in the script.
-
-5. **Deploy to GCP**
-
-   ```bash
-   # Authenticate
-   gcloud auth login
-   gcloud config set project YOUR_PROJECT_ID
-
-   # Deploy backend
-   gcloud run deploy docuflow-backend \
-     --source=backend \
-     --region=us-central1 \
-     --allow-unauthenticated
-
-   # Deploy frontend (if containerized similarly)
-   gcloud run deploy docuflow-frontend \
-     --source=frontend \
-     --region=us-central1 \
-     --allow-unauthenticated
-   ```
-
----
-
-## 🛠️ API Usage
-
-All endpoints require an API key in the `Authorization` header:
-
-```http
+DocuFlow LiteDocuFlow Lite is a simple, cost-effective web application designed to help Small and Medium-sized Businesses (SMBs), freelancers, and startups automate data extraction from common business documents. By leveraging a serverless architecture on Google Cloud Platform, it provides an accessible entry point to AI-powered workflow automation, eliminating tedious manual data entry and reducing errors.✨ Key FeaturesAI-Powered Data Extraction: Automatically pulls key information from invoices and receipts (e.g., vendor, date, total amount) using Google Cloud's AI services.Simple Document Upload: An intuitive web interface for uploading documents in PDF, JPG, or PNG format.Structured Data Output: View extracted data in a clean format within the app or download it as a CSV file for easy import into other systems.Secure API Access: A RESTful API allows for programmatic integration into other applications and custom workflows.API Key Management: A straightforward UI for users to generate and manage their own secure API keys.🏗️ Technical Architecture & Tech StackDocuFlow Lite is built on a modern, serverless architecture using Google Cloud Platform to ensure scalability and cost-efficiency, with a goal of operating primarily within GCP's free tier for low-to-moderate usage.Frontend: A single-page application built with HTML5, Tailwind CSS, and Vanilla JavaScript (with Chart.js).Backend: A containerized service running on Cloud Run (e.g., using Node.js or Python).Database: Firestore for storing user data, API keys, and document metadata.API: Managed and secured by API Gateway.AI Processing: Leverages Cloud Vision AI or Document AI for OCR and data extraction.Storage: Cloud Storage for temporary document uploads.Authentication: Firebase Authentication for user sign-up and sign-in.CI/CD: Automated builds and deployments handled by Cloud Build.+---------------------+     +----------------------+     +---------------------+
+| End User /          | --> | Frontend (Cloud Run) | --> | API Gateway         |
+| Developer (via API) |     +----------------------+     +----------+----------+
++---------------------+                                            |
+                                                                     v
+                                                          +----------+----------+
+                                                          | Backend (Cloud Run) |
+                                                          +----------+----------+
+                                                                     |
+       +-------------------------------------------------------------+-------------------------------------------------------------+
+       |                                                             |                                                             |
+       v                                                             v                                                             v
++------+-------------+                                  +----------+---------+                                   +-------------+----+
+| Firebase Auth      |                                  | Firestore (DB)     |                                   | AI Services      |
+| (User Mgmt)        |                                  | (User Data,        |                                   | (Vision / Doc AI)|
++--------------------+                                  |  Extracted Data)   |                                   +------------------+
+                                                        +--------------------+
+📂 Project StructureThe project is organized into distinct frontend and backend directories, along with cloud configuration files./docuflow-light/
+|
+├── 📂 backend/
+|   ├── src/
+|   |   ├── index.js             # Main server file
+|   |   ├── api/                 # API route definitions
+|   |   └── services/            # Logic for GCP services
+|   ├── Dockerfile               # Container definition for Cloud Run
+|   └── package.json
+|
+├── 📂 frontend/
+|   └── index.html               # Single-page application file
+|
+├── 📜 .gitignore
+├── 📜 cloudbuild.yaml           # CI/CD pipeline configuration
+├── 📜 openapi-spec.yaml          # API Gateway specification
+└── 📜 README.md
+🚀 Getting StartedFollow these steps to set up the project.PrerequisitesGitNode.js (for the backend)DockerGoogle Cloud SDK (gcloud CLI)Installation & SetupClone the repository:git clone https://github.com/skylerseeg/docuflow-light.git
+cd docuflow-light
+Set up Google Cloud Project:Create a new project on the GCP Console (if you haven't already).Enable the required APIs: Cloud Run, Firestore, Document AI, API Gateway, Cloud Build, and Cloud Storage.Create a service account with appropriate permissions and download its JSON key.Backend Setup:Navigate to the backend directory: cd backendInstall dependencies: npm installCreate a .env file for your environment variables (GCP Project ID, service account details, etc.).Run the backend locally using npm run dev or deploy to Cloud Run.Frontend:The frontend/index.html file can be opened directly in a browser for viewing static content. For full functionality, it will need to be configured to connect to the deployed backend API.⚙️ API UsageThe DocuFlow Lite API is protected and requires an API key for access. Users can generate a key from their profile page in the web application.To make a request, include your API key in the Authorization header.Example: Upload a document for processingPOST /api/v1/documents/upload
+Host: <your-api-gateway-url>
 Authorization: Bearer <YOUR_API_KEY>
-```
+Content-Type: multipart/form-data;
 
-### Upload a Document
+--boundary
+Content-Disposition: form-data; name="file"; filename="invoice.pdf"
 
-```http
-POST /api/v1/documents
-Host: https://<your-api-gateway-url>
-Content-Type: multipart/form-data
-```
-
-**Body**
-
-* `file`: The document file (PDF, JPG, or PNG)
-
-**Response**
-
-```json
-{
-  "documentId": "abc123",
-  "extractedData": {
-    "vendor": "Acme Corp",
-    "date": "2025-06-10",
-    "total": 1234.56,
-    // ...
-  }
-}
-```
-
-### List Documents
-
-```http
-GET /api/v1/documents
-```
-
----
-
-## 🤝 Contributing & License
-
-* **Contributions welcome!** Please fork, create a feature branch, and submit a PR.
-* **License:** MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-> Ready to automate your invoice processing? 🚀
-> Built with ❤️ by the DocuFlow Lite team.
-
-```
-```
+<file_content>
+--boundary--
